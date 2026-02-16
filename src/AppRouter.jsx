@@ -5,6 +5,7 @@ import ContactUs from "./pages/ContactUs"
 import Home from "./pages/Home"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import SignIn from "./pages/SignIn"
+import AddUser from "./pages/admin/AddUser"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import StudentDashboard from "./pages/student/StudentDashboard"
 import TeacherDashboard from "./pages/teacher/TeacherDashboard"
@@ -44,6 +45,7 @@ const AppRouter = () => {
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AppLayout routes={adminRoutes} />}>
                     <Route index element={<AdminDashboard />}></Route>
+                    <Route path="add-user" element={<AddUser />}></Route>
                 </Route>
 
                 {/* Teacher Routes */}
