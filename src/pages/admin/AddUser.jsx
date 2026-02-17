@@ -20,7 +20,8 @@ const AddUser = () => {
             body: JSON.stringify(formData)
         }
         const response = await fetch("http://localhost:5001/users", config);
-        console.log(response);
+        const user = await response.json();
+        console.log(user);
     }
 
     return (
