@@ -1,8 +1,11 @@
+import { useContext } from "react"
 import { NavLink } from "react-router"
 import logo from "../../assets/images/logo.png"
+import AuthContext from "../../context/AuthContext"
 import Container from "../layout/Container"
 
 const Navbar = ({ routes }) => {
+    const { logout } = useContext(AuthContext);
     return (
         <div className="bg-teal-800 text-white py-2">
             <Container>
@@ -18,6 +21,7 @@ const Navbar = ({ routes }) => {
                                 )} to={route.link}>{route.linkText}</NavLink>
                             ))
                         }
+                        <button onClick={logout} className="font-bold py-1 text-lg">Logout</button>
                     </div>
                 </div>
             </Container>
