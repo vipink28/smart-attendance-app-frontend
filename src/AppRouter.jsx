@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { Route, Routes } from "react-router"
+import ProtectedRoute from "./components/ProtectedRoute"
 import AuthContext from "./context/AuthContext"
 import AppLayout from "./layouts/AppLayout"
 import About from "./pages/About"
@@ -9,6 +10,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import SignIn from "./pages/SignIn"
 import AddUser from "./pages/admin/AddUser"
 import AdminDashboard from "./pages/admin/AdminDashboard"
+import UsersList from "./pages/admin/UsersList"
 import StudentDashboard from "./pages/student/StudentDashboard"
 import TeacherDashboard from "./pages/teacher/TeacherDashboard"
 
@@ -48,18 +50,20 @@ const AppRouter = () => {
                 {/* <Route path="*" element={<PageNotFound />}></Route> */}
 
                 {/* Admin Routes */}
-                <Route path="/admin" element={<AppLayout routes={adminRoutes} />}>
+
+                <Route path="/admin" element={<ProtectedRoute><AppLayout routes={adminRoutes} /></ProtectedRoute>}>
                     <Route index element={<AdminDashboard />}></Route>
                     <Route path="add-user" element={<AddUser />}></Route>
+                    <Route path="users-list" element={<UsersList />}></Route>
                 </Route>
 
                 {/* Teacher Routes */}
-                <Route path="/teacher" element={<AppLayout routes={teacherRoutes} />}>
+                <Route path="/teacher" element={<ProtectedRoute><AppLayout routes={teacherRoutes} /></ProtectedRoute>}>
                     <Route index element={<TeacherDashboard />}></Route>
                 </Route>
 
                 {/* Student Routes */}
-                <Route path="/student" element={<AppLayout routes={studentRoutes} />}>
+                <Route path="/student" element={<ProtectedRoute><AppLayout routes={studentRoutes} /></ProtectedRoute>}>
                     <Route index element={<StudentDashboard />}></Route>
                 </Route>
             </Routes>
