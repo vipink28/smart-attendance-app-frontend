@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const UsersList = () => {
     const [users, setUsers] = useState(null);
+    const [roleValue, setRoleValue] = useState("all")
+    const [searchText, setSearchText] = useState("");
+
     const fetchUserList = async () => {
         const response = await fetch("http://localhost:5001/users", { method: "GET" })
         const users = await response.json();
@@ -10,9 +13,25 @@ const UsersList = () => {
     useEffect(() => {
         fetchUserList();
     }, [])
+
+    const filteredUsers = useMemo(() => {
+        return users && users.filter((item) => (
+            roleValue === "all" ? true : item.role === roleValue
+        )).filter((item) => (item.username.includes(searchText)))
+    }, [users, roleValue, searchText])
+
     return (
         <div>
             <h2>Users List</h2>
+            <div className="flex justify-between items-center py-5">
+                <input type="search" className="border border-white" onChange={(e) => { setSearchText(e.target.value) }} />
+
+                <select onChange={(e) => { setRoleValue(e.target.value) }}>
+                    <option value="all">All</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+            </div>
             <table className="w-full">
                 <thead>
                     <tr>
@@ -25,8 +44,8 @@ const UsersList = () => {
                 </thead>
                 <tbody>
                     {
-                        users &&
-                        users.map((user) => (
+                        filteredUsers &&
+                        filteredUsers.map((user) => (
                             <tr key={user.id}>
                                 <td>{user.id}</td>
                                 <td>{user.username}</td>

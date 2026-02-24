@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     //user signin 
     const userSignIn = async (formData) => {
@@ -38,15 +39,17 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const localUser = JSON.parse(localStorage.getItem("sasuser"));
         setUser(localUser)
+        setLoading(false);
     }, [])
 
     return (
         <AuthContext.Provider value={{
             user,
             userSignIn,
-            logout
+            logout,
+            loading
         }}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     )
 }

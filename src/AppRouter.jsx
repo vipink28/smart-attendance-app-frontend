@@ -51,20 +51,26 @@ const AppRouter = () => {
 
                 {/* Admin Routes */}
 
-                <Route path="/admin" element={<ProtectedRoute><AppLayout routes={adminRoutes} /></ProtectedRoute>}>
-                    <Route index element={<AdminDashboard />}></Route>
-                    <Route path="add-user" element={<AddUser />}></Route>
-                    <Route path="users-list" element={<UsersList />}></Route>
+                <Route element={<ProtectedRoute allowedRoutes={["admin"]} />}>
+                    <Route path="/admin" element={<AppLayout routes={adminRoutes} />}>
+                        <Route index element={<AdminDashboard />}></Route>
+                        <Route path="add-user" element={<AddUser />}></Route>
+                        <Route path="users-list" element={<UsersList />}></Route>
+                    </Route>
                 </Route>
 
                 {/* Teacher Routes */}
-                <Route path="/teacher" element={<ProtectedRoute><AppLayout routes={teacherRoutes} /></ProtectedRoute>}>
-                    <Route index element={<TeacherDashboard />}></Route>
+                <Route element={<ProtectedRoute allowedRoutes={["teacher"]} />}>
+                    <Route path="/teacher" element={<AppLayout routes={teacherRoutes} />}>
+                        <Route index element={<TeacherDashboard />}></Route>
+                    </Route>
                 </Route>
 
                 {/* Student Routes */}
-                <Route path="/student" element={<ProtectedRoute><AppLayout routes={studentRoutes} /></ProtectedRoute>}>
-                    <Route index element={<StudentDashboard />}></Route>
+                <Route element={<ProtectedRoute allowedRoutes={["student"]} />}>
+                    <Route path="/student" element={<AppLayout routes={studentRoutes} />}>
+                        <Route index element={<StudentDashboard />}></Route>
+                    </Route>
                 </Route>
             </Routes>
         </>

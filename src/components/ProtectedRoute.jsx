@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-const ProtectedRoute = ({ children }) => {
-    const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    useEffect(() => {
-        const localUser = JSON.parse(localStorage.getItem("sasuser"));
-        if (localUser) {
-            setIsLoggedIn(true)
-        } else {
-            navigate("/sign-in")
-        }
-    }, [])
-    return isLoggedIn ? children : null
+import { useContext } from "react";
+import { Navigate, Outlet } from "react-router";
+import AuthContext from "../context/AuthContext";
+
+const ProtectedRoute = ({ allowedRoutes }) => {
+    const { user } = useContext(AuthContext);
+    if (!user) {
+        return <Navigate to="/sign-in" />
+    }
+    if (!allowedRoutes.includes(user.role)) {
+        return <Navigate to="/unauthorized" />
+    }
+    return <Outlet />
 }
 
 export default ProtectedRoute
