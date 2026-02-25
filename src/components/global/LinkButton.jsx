@@ -1,7 +1,8 @@
+import { Link } from "react-router"
 
-const LinkButton = () => {
+const LinkButton = ({ to, children }) => {
     return (
-        <div>LinkButton</div>
+        <Link to={to} className="bg-teal-800 text-white px-5 py-2 rounded-full font-bold">{children}</Link>
     )
 }
 
