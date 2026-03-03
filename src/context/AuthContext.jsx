@@ -10,21 +10,23 @@ export const AuthProvider = ({ children }) => {
 
     //user signin 
     const userSignIn = async (formData) => {
-        const response = await fetch(`http://localhost:5001/users?email=${formData.email}&password=${formData.password}`, { method: "GET" });
-        const user = await response.json();
-        if (user.length > 0) {
-            localStorage.setItem("sasuser", JSON.stringify(user[0]))
-            setUser(user[0])
-            alert("logged in successfully")
-            if (user[0].role === "admin") {
-                navigate("/admin")
-            } else if (user[0].role === "teacher") {
-                navigate("/teacher")
-            } else {
-                navigate("/student")
-            }
+        const response = await fetch("http://localhost:5000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message);
+
+        localStorage.setItem("sasuser", data.token);
+        setUser(data.user);
+        if (data.user.role === "admin") {
+            navigate("/admin")
+        } else if (data.user.role === "teacher") {
+            navigate("/teacher")
         } else {
-            alert("email/password is not valid")
+            navigate("/student")
         }
     }
 
@@ -37,10 +39,20 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const localUser = JSON.parse(localStorage.getItem("sasuser"));
-        setUser(localUser)
+        const token = localStorage.getItem("sasuser");
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setUser({
+                    token,
+                    id: decoded.id
+                });
+            } catch (error) {
+                localStorage.removeItem("sasuser");
+            }
+        }
         setLoading(false);
-    }, [])
+    }, []);
 
     return (
         <AuthContext.Provider value={{

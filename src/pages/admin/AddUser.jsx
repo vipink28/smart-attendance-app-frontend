@@ -10,16 +10,17 @@ const AddUser = () => {
             [name]: value
         }))
     }
-
     const addNewUser = async () => {
+        console.log(localStorage.getItem("sasuser"));
         const config = {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("sasuser")}`
             },
             body: JSON.stringify(formData)
         }
-        const response = await fetch("http://localhost:5001/users", config);
+        const response = await fetch("http://localhost:5000/api/admin/students", config);
         const user = await response.json();
         console.log(user);
     }
@@ -43,6 +44,26 @@ const AddUser = () => {
                         <div className="mb-3">
                             <label className="block mb-3">Password</label>
                             <input type="password" name="password" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="block mb-3">Phone</label>
+                            <input type="text" name="phone" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="block mb-3">Roll Number</label>
+                            <input type="number" name="rollNumber" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="block mb-3">Date of Birth</label>
+                            <input type="date" name="dateOfBirth" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="block mb-3">Joining Year</label>
+                            <input type="number" name="joiningYear" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
                         </div>
 
                         <div className="mb-3">
