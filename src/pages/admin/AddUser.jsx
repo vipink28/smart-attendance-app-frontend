@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Container from "../../components/layout/Container";
+import { showToast } from "../../utils/toastUtils";
 
 const AddUser = () => {
     const [formData, setFormData] = useState(null);
@@ -10,8 +11,17 @@ const AddUser = () => {
             [name]: value
         }))
     }
-    const addNewUser = async () => {
-        console.log(localStorage.getItem("sasuser"));
+
+    const [teacherFormData, setTeacherFormData] = useState(null);
+    const teacherInputHandler = (e) => {
+        const { value, name } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const addNewStudent = async () => {
         const config = {
             method: "POST",
             headers: {
@@ -22,14 +32,28 @@ const AddUser = () => {
         }
         const response = await fetch("http://localhost:5000/api/admin/students", config);
         const user = await response.json();
-        console.log(user);
+        showToast("success", "Student added successfully!");
+    }
+
+    const addNewTeacher = async () => {
+        const config = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("sasuser")}`
+            },
+            body: JSON.stringify(teacherFormData)
+        }
+        const response = await fetch("http://localhost:5000/api/admin/teacher", config);
+        const user = await response.json();
+        showToast("success", "Teacher added successfully!");
     }
 
     return (
         <>
             <Container>
                 <div className="py-5">
-                    <h2 className="text-2xl font-bold mb-4 text-center">Add User</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-center">Add Student</h2>
                     <div className="max-w-2xl mx-auto px-4">
                         <div className="mb-3">
                             <label className="block mb-3">Name</label>
@@ -74,7 +98,7 @@ const AddUser = () => {
                                 <option value="student">Student</option>
                             </select>
                         </div>
-                        <button onClick={addNewUser}>Add User</button>
+                        <button onClick={addNewStudent}>Add Student</button>
                     </div>
                 </div>
             </Container>

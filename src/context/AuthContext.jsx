@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { showToast } from "../utils/toastUtils";
 
 const AuthContext = createContext();
 
@@ -17,10 +18,14 @@ export const AuthProvider = ({ children }) => {
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message);
+        if (!response.ok) {
+            showToast("error", data.message);
+            throw new Error(data.message);
+        }
 
         localStorage.setItem("sasuser", data.token);
         setUser(data.user);
+        showToast("success", "Login successful!");
         if (data.user.role === "admin") {
             navigate("/admin")
         } else if (data.user.role === "teacher") {
