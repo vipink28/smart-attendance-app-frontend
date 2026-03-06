@@ -15,7 +15,7 @@ const AddUser = () => {
     const [teacherFormData, setTeacherFormData] = useState(null);
     const teacherInputHandler = (e) => {
         const { value, name } = e.target;
-        setFormData((prev) => ({
+        setTeacherFormData((prev) => ({
             ...prev,
             [name]: value
         }))
@@ -44,7 +44,7 @@ const AddUser = () => {
             },
             body: JSON.stringify(teacherFormData)
         }
-        const response = await fetch("http://localhost:5000/api/admin/teacher", config);
+        const response = await fetch("http://localhost:5000/api/admin/teachers", config);
         const user = await response.json();
         showToast("success", "Teacher added successfully!");
     }
@@ -52,55 +52,104 @@ const AddUser = () => {
     return (
         <>
             <Container>
-                <div className="py-5">
-                    <h2 className="text-2xl font-bold mb-4 text-center">Add Student</h2>
-                    <div className="max-w-2xl mx-auto px-4">
-                        <div className="mb-3">
-                            <label className="block mb-3">Name</label>
-                            <input type="text" name="username" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <div className="py-5">
+                        <h2 className="text-2xl font-bold mb-4 text-center">Add Student</h2>
+                        <div className="max-w-2xl mx-auto px-4">
+                            <div className="mb-3">
+                                <label className="block mb-3">Name</label>
+                                <input type="text" name="username" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Email</label>
-                            <input type="email" name="email" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Email</label>
+                                <input type="email" name="email" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Password</label>
-                            <input type="password" name="password" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Password</label>
+                                <input type="password" name="password" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Phone</label>
-                            <input type="text" name="phone" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Phone</label>
+                                <input type="text" name="phone" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Roll Number</label>
-                            <input type="number" name="rollNumber" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Roll Number</label>
+                                <input type="number" name="rollNumber" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Date of Birth</label>
-                            <input type="date" name="dateOfBirth" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Date of Birth</label>
+                                <input type="date" name="dob" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Joining Year</label>
-                            <input type="number" name="joiningYear" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
-                        </div>
+                            <div className="mb-3">
+                                <label className="block mb-3">Joining Year</label>
+                                <input type="number" name="joiningYear" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
 
-                        <div className="mb-3">
-                            <label className="block mb-3">Select Role</label>
-                            <select name="role" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full">
-                                <option>Select Role</option>
-                                <option value="teacher">Teacher</option>
-                                <option value="student">Student</option>
-                            </select>
+                            <div className="mb-3">
+                                <label className="block mb-3">Select Role</label>
+                                <select name="role" onChange={inputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full">
+                                    <option>Select Role</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="student">Student</option>
+                                </select>
+                            </div>
+                            <button onClick={addNewStudent}>Add Student</button>
                         </div>
-                        <button onClick={addNewStudent}>Add Student</button>
+                    </div>
+
+                    <div className="py-5">
+                        <h2 className="text-2xl font-bold mb-4 text-center">Add Teacher</h2>
+                        <div className="max-w-2xl mx-auto px-4">
+                            <div className="mb-3">
+                                <label className="block mb-3">Name</label>
+                                <input type="text" name="username" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Email</label>
+                                <input type="email" name="email" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Password</label>
+                                <input type="password" name="password" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Phone</label>
+                                <input type="text" name="phone" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Date of Birth</label>
+                                <input type="date" name="dob" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Qualification</label>
+                                <input type="text" name="qualification" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full" />
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="block mb-3">Select Role</label>
+                                <select name="role" onChange={teacherInputHandler} className="h-10 border-slate-300 bg-white outline-none p-2 text-slate-950 w-full">
+                                    <option>Select Role</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="student">Student</option>
+                                </select>
+                            </div>
+                            <button onClick={addNewTeacher}>Add Teacher</button>
+                        </div>
                     </div>
                 </div>
+
+
             </Container>
         </>
     )

@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { showToast } from "../utils/toastUtils";
@@ -23,7 +24,10 @@ export const AuthProvider = ({ children }) => {
             throw new Error(data.message);
         }
 
-        localStorage.setItem("sasuser", data.token);
+        localStorage.setItem("sasuser", JSON.stringify({
+            token: data.token,
+            user: data.user
+        }));
         setUser(data.user);
         showToast("success", "Login successful!");
         if (data.user.role === "admin") {
@@ -45,17 +49,24 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("sasuser");
+
         if (token) {
             try {
                 const decoded = jwtDecode(token);
+
                 setUser({
-                    token,
-                    id: decoded.id
+                    id: decoded.id,
+                    role: decoded.role,
+                    username: decoded.username,
+                    email: decoded.email,
+                    token
                 });
+
             } catch (error) {
                 localStorage.removeItem("sasuser");
             }
         }
+
         setLoading(false);
     }, []);
 
