@@ -10,6 +10,9 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import SignIn from "./pages/SignIn"
 import AddUser from "./pages/admin/AddUser"
 import AdminDashboard from "./pages/admin/AdminDashboard"
+import StudentsList from "./pages/admin/StudentsList"
+import Teacher from "./pages/admin/Teacher"
+import TeachersList from "./pages/admin/TeachersList"
 import UsersList from "./pages/admin/UsersList"
 import StudentDashboard from "./pages/student/StudentDashboard"
 import TeacherDashboard from "./pages/teacher/TeacherDashboard"
@@ -20,8 +23,8 @@ const AppRouter = () => {
 
     const adminRoutes = [
         { link: "/admin", linkText: "Dashboard" },
-        { link: "/admin/teachers", linkText: "Teachers" },
-        { link: "/admin/students", linkText: "Students" },
+        { link: "/admin/teachers-list", linkText: "Teachers" },
+        { link: "/admin/students-list", linkText: "Students" },
         { link: "/admin/classes", linkText: "Classes" },
         { link: "/admin/account", linkText: user?.username },
     ]
@@ -56,6 +59,9 @@ const AppRouter = () => {
                         <Route index element={<AdminDashboard />}></Route>
                         <Route path="add-user" element={<AddUser />}></Route>
                         <Route path="users-list" element={<UsersList />}></Route>
+                        <Route path="teachers-list" element={<TeachersList />}></Route>
+                        <Route path="students-list" element={<StudentsList />}></Route>
+                        <Route path="teacher/:action/:id" element={<Teacher />}></Route>
                     </Route>
                 </Route>
 
