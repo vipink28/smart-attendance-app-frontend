@@ -1,7 +1,7 @@
 import { Toaster } from "react-hot-toast"
 import AppRouter from "./AppRouter"
 
-
+//app
 const App = () => {
   return (
     <>
